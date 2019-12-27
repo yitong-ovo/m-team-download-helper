@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
+    <title>创建一个新的下载地址</title>
+    <style>
+        .box {
+            margin-top: 13%;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <!-- 需要一个更清晰的描述，你有更好的点子吗？ -->
+        <h1>创建一个新的下载<sup>(?)</sup>地址</h1>
+        <label class="form-label">将下面的链接填入 <mark>UserScript 脚本</mark> 内。</label>
+        <div class="input-group">
+            <input type="text" class="form-input" id="backendURL">
+            <button class="btn btn-primary input-group-btn" data-clipboard-target="#backendURL">复制</button>
+        </div>
+        <label class="form-label">将下面的链接填到 <mark>BitTorrent 软件的 RSS 订阅</mark> 里。</label>
+        <div class="input-group">
+            <input type="text" class="form-input" id="rssURL">
+            <button class="btn btn-primary input-group-btn" data-clipboard-target="#rssURL">复制</button>
+        </div>
+        <a href="https://github.com/yitong-ovo/m-team-download-helper">GitHub</a>
+    </div>
+</body>
+<script>
+    new ClipboardJS('.btn');
+    function createURL() {
+        uuid4 = uuidv4();
+        backend_URL = document.location.href + uuid4 + '/addDownload';
+        rssURL = document.location.href + uuid4 + '/getDownload.xml';
+
+        document.querySelector('#backendURL').value = backend_URL;
+        document.querySelector('#rssURL').value = rssURL;
+    }
+    createURL();
+</script>
+
+</html>
