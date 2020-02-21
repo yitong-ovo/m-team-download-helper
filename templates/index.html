@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
     <title>创建一个新的下载地址</title>
     <style>
         .box {
@@ -38,7 +37,7 @@
 <script>
     new ClipboardJS('.btn');
     function createURL() {
-        uuid4 = uuidv4();
+        uuid4 = "{{ templates_uuid4 }}"
         backend_URL = document.location.href + uuid4 + '/addDownload';
         rssURL = document.location.href + uuid4 + '/getDownload.xml';
 

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response, request, jsonify
 from flask_cors import CORS
+from uuid import uuid4
 
 app = Flask(__name__)
 CORS(app)
@@ -7,7 +8,7 @@ download_list = {}
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    return render_template('index.html',templates_uuid4=uuid4())
 
 @app.route('/<secret>/getDownload.xml', methods=['GET'])
 def make_download_xml(secret):
