@@ -7,10 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
-    <title>创建一个新的下载地址</title>
+    <title>m-team 下载助手</title>
     <style>
         .box {
-            margin-top: 13%;
+            margin-top: 3%;
             margin-left: 20%;
             margin-right: 20%;
         }
@@ -19,32 +19,179 @@
 
 <body>
     <div class="box">
-        <!-- 需要一个更清晰的描述，你有更好的点子吗？ -->
-        <h1>创建一个新的下载<sup>(?)</sup>地址</h1>
-        <label class="form-label">将下面的链接填入 <mark>UserScript 脚本</mark> 内。</label>
+        <h1>m-team 下载助手</h1>
+
+        <br>
+
+        <h3>1. 输入你想进行分类的标签</h3>
+        <label class="form-label">输入你的标签:</label>
+        <div class="col-6">
+            <input type="text" class="form-input" id="types_input">
+        </div>
+        <ul>
+            <li>标签规则：</li>
+            <ul>
+                <li>在以上文本框输入下载时的使用标签分类，使用 <b>英文逗号：</b><code>,</code> 分割标签。</li>
+                <li>标签内不要包含空格， 请使用下划线 <code>_</code> 或英文连字符 <code>-</code> 代替。</li>
+                <li>在创建标签时，请针对细化的分类直接创建附带名称的标签，例如:</li>
+                <ul>
+                    <li>正确的示例：</li>
+                    <ul>
+                        <li><code>4K_其他,4K_电视,4K_电影</code></li>
+                    </ul>
+                    <li>错误的示例：</li>
+                    <ul>
+                        <li><code>4K,4K_电视,4K_电影</code></li>
+                        <li>在以上示例中，因为匹配规则的关系，带有 <code>4K</code> 名称的标签（例如 <code>4K_电视,4K_电影</code>）会被直接匹配到
+                            <code>4K</code> 的分类，造成子分类匹配失效。</li>
+                    </ul>
+                </ul>
+                <li>标签示例: <code>其他,4K_其他,4K_电视,4K_电影,电影,电视,综合_电影,综合_电子书,动漫,音乐</code></li>
+            </ul>
+        </ul>
+
+        <br>
+
+        <h3>2. 创建本地的下载文件夹</h3>
+        <h4>Windows:</h4>
+        <p>在<mark>文件管理器</mark>中打开你需要设置的<b>目标下载目录</b></p>
+        <p>按住 <kbd>Shift</kbd>，鼠标右键空白处，选择 "<ins>在此处打开命令窗口</ins>"，然后粘贴以下命令，回车执行。</p>
+        <pre class="code" data-lang="Windows"><code id="windows_makedir_codes"> </code></pre>
+
+        <h4>macOS&Linux:</h4>
+        <p>怎么开终端，怎么到下载目录你自己来。粘贴下面命令执行就是。</b></p>
+        <pre class="code" data-lang="macOS & Linux"><code id="macos_and_linux_makedir_codes"> </code></pre>
+
+        <h3>3. 生成并导入 qBittorrent RSS 规则配置文件</h3>
+        <label class="form-label">运行完命令别急着关闭终端(命令窗口)，运行完成之后会输出当前(也就是运行脚本)的路径，粘贴进来。</label>
+        <div class="col-6">
+            <input type="text" class="form-input" id="directory_path">
+        </div>
+        <div class="form-group">
+            <label class="form-radio form-inline">
+                <input type="radio" name="os-type" value="os_win" checked=""><i class="form-icon"></i> Windows
+            </label>
+            <label class="form-radio form-inline">
+                <input type="radio" name="os-type" value="os_mac_linux"><i class="form-icon"></i> macOS & Linux
+            </label>
+        </div>
+        <pre class="code" data-lang="qBittorrent Rss Rule"><code id="qBittorrent_rss_rule_codes"> </code></pre>
+        <button class="btn btn-link disabled" id='qBittorrent_rss_rule_bth'>下载配置</button>
+        <p>然后<b>打开</b> qBittorrent 的 <mark>设置-RSS-勾选[启用 RSS BitTorrent 自动下载]-修改自动下载规则-导入</mark> <b>选择</b>刚刚下载的 json
+            文件，点击即可导入。</p>
+
+        <h3>4. 安装并配置 UserScript 脚本</h3>
+        <p>
+            首先你要确认你有安装 <a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a> 之类的 UserScript 管理器。
+            然后点击 <a href="https://github.com/yitong-ovo/m-team-download-helper/raw/master/m-team-download-helper.user.js" target="_blank" rel="noopener noreferrer">这里</a> 安装脚本。
+            安装脚本后，使用你的 UserScript 管理器打开编辑脚本的界面。
+        </p>
+        <label class="form-label">将下面的标签粘贴到 <mark>UserScript 脚本</mark> 的 <mark>分类列表</mark> 内。</label>
+        <div class="input-group col-6">
+            <input type="text" class="form-input" id="types_generate">
+            <button class="btn btn-primary input-group-btn" data-clipboard-target="#types_generate">复制</button>
+        </div>
+        <label class="form-label">将下面的链接填入 <mark>UserScript 脚本</mark> 的 <mark>后端地址</mark> 内。</label>
         <div class="input-group">
             <input type="text" class="form-input" id="backendURL">
             <button class="btn btn-primary input-group-btn" data-clipboard-target="#backendURL">复制</button>
         </div>
-        <label class="form-label">将下面的链接填到 <mark>BitTorrent 软件的 RSS 订阅</mark> 里。</label>
-        <div class="input-group">
-            <input type="text" class="form-input" id="rssURL">
-            <button class="btn btn-primary input-group-btn" data-clipboard-target="#rssURL">复制</button>
-        </div>
+        <p>编辑填写你所需要默认选中的分类，保存就可以使用了。</p>
         <a href="https://github.com/yitong-ovo/m-team-download-helper">GitHub</a>
     </div>
 </body>
 <script>
     new ClipboardJS('.btn');
-    function createURL() {
-        uuid4 = "{{ templates_uuid4 }}"
-        backend_URL = document.location.href + uuid4 + '/addDownload';
-        rssURL = document.location.href + uuid4 + '/getDownload.xml';
 
-        document.querySelector('#backendURL').value = backend_URL;
-        document.querySelector('#rssURL').value = rssURL;
+    uuid4 = "{{ templates_uuid4 }}"
+    backend_URL = document.location.href + uuid4 + '/addDownload';
+    rssURL = document.location.href + uuid4 + '/getDownload.xml';
+
+    let types_input = document.querySelector('#types_input');
+    let windows_makedir_codes = document.querySelector('#windows_makedir_codes');
+    let macos_and_linux_makedir_codes = document.querySelector('#macos_and_linux_makedir_codes');
+    let directory_path = document.querySelector('#directory_path');
+    let qBittorrent_rss_rule_codes = document.querySelector('#qBittorrent_rss_rule_codes');
+    let os_type_radios = document.querySelectorAll('input[name=os-type]');
+    let qBittorrent_rss_rule_bth = document.querySelector('#qBittorrent_rss_rule_bth');
+    let types_generate = document.querySelector('#types_generate');
+
+    types_input.addEventListener('input', updateTypes);
+    directory_path.addEventListener('input', qBittorrent_rss_rule_generate);
+    qBittorrent_rss_rule_bth.addEventListener('click', download_qBittorrent_rss_rule);
+    for (os_type_radio of os_type_radios) {
+        os_type_radio.addEventListener('change', qBittorrent_rss_rule_generate)
     }
-    createURL();
+    function updateTypes() {        
+        windows_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + '&cd';
+        macos_and_linux_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + ';pwd';
+    };
+    function qBittorrent_rss_rule_generate() {
+        input_path = directory_path.value;
+        if (!types_input.value || !input_path) {
+            qBittorrent_rss_rule_codes.innerHTML = ' ';
+            qBittorrent_rss_rule_bth.classList.add('disabled')
+            return;
+        }
+        if (input_path.charAt(0) === '/') {
+            document.querySelector('input[value=os_mac_linux]').checked = true;
+        } else {
+            document.querySelector('input[value=os_win]').checked = true;
+        }
+        qBittorrent_rss_rule = {}
+
+        if (document.querySelector('input[name=os-type]:checked').value === 'os_win') {
+            input_path = input_path.replace(/\\/g, '/')
+        } else if (document.querySelector('input[name=os-type]:checked').value === 'os_mac_linux') {
+
+        }
+        for (type of types_input.value.split(',')) {
+            if (input_path.charAt(input_path.length - 1) === '/') {
+                path = input_path + type
+            } else {
+                path = input_path + '/' + type
+            }
+            qBittorrent_rss_rule[type] =
+            {
+                "addPaused": null,
+                "affectedFeeds": [
+                    rssURL
+                ],
+                "assignedCategory": "",
+                "enabled": true,
+                "episodeFilter": "",
+                "ignoreDays": 0,
+                "lastMatch": "",
+                "mustContain": type,
+                "mustNotContain": "",
+                "previouslyMatchedEpisodes": [
+                ],
+                "savePath": path,
+                "smartFilter": false,
+                "useRegex": false
+            }
+        }
+        qBittorrent_rss_rule_codes.innerHTML = JSON.stringify(qBittorrent_rss_rule)
+        qBittorrent_rss_rule_bth.classList.remove('disabled')
+        document.querySelector('#backendURL').value = backend_URL;
+        types_generate.value = JSON.stringify(types_input.value.split(','));
+    }
+    function download_qBittorrent_rss_rule() {
+        qBittorrent_rss_rule_bth.classList.add('loading')
+        setTimeout(() => {
+            var blob = new Blob([JSON.stringify(qBittorrent_rss_rule)], { type: "application/json" });
+            var url = URL.createObjectURL(blob);
+
+            var element = document.createElement('a');
+            element.setAttribute('href', url);
+            element.setAttribute('download', "qBittorrent_rss_rules.json");
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            qBittorrent_rss_rule_bth.classList.remove('loading')
+        }, 1000 * 0.5);
+    }
 </script>
 
 </html>
