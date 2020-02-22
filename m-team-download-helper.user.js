@@ -15,10 +15,10 @@
 
 // Config 配置选项:
 // 填写你的后端地址
-const backend_url = 'https://yourapi.example.com/8eb2fa54-3359-4441-8e11-b7e13a796a2d/addDownload'
+const backend_url = // 在 "//" 前添加后端地址
 // 分类列表
-const types = ['4K', '电影', '电视', '综合', '动漫', '音乐']
-// 默认选中的分类
+const types = // 在 "//" 前添加分类
+// 编辑默认选中的分类
 const types_default = '电视'
 
 
