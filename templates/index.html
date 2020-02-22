@@ -75,7 +75,7 @@
                 <input type="radio" name="os-type" value="os_mac_linux"><i class="form-icon"></i> macOS & Linux
             </label>
         </div>
-        <pre class="code" data-lang="qBittorrent Rss Rule"><code id="qBittorrent_rss_rule_codes"> </code></pre>
+        <pre class="code" data-lang="qBittorrent RSS Rule"><code id="qBittorrent_rss_rule_codes"> </code></pre>
         <button class="btn btn-link disabled" id='qBittorrent_rss_rule_bth'>下载配置</button>
         <p>然后<b>打开</b> qBittorrent 的 <mark>设置-RSS-勾选[启用 RSS BitTorrent 自动下载]-修改自动下载规则-导入</mark> <b>选择</b>刚刚下载的 json
             文件，点击即可导入。</p>
@@ -101,55 +101,78 @@
     </div>
 </body>
 <script>
+    // 在按钮上绑定 ClipboardJS
     new ClipboardJS('.btn');
 
+    // 服务端生成的 uuid4，用于服务端区分用户
     uuid4 = "{{ templates_uuid4 }}"
+    // 添加任务的后端地址
     backend_URL = document.location.href + uuid4 + '/addDownload';
+    // rss 订阅的地址
     rssURL = document.location.href + uuid4 + '/getDownload.xml';
 
+    // 输入分类的文本框
     let types_input = document.querySelector('#types_input');
+    // 创建文件夹的代码框
     let windows_makedir_codes = document.querySelector('#windows_makedir_codes');
     let macos_and_linux_makedir_codes = document.querySelector('#macos_and_linux_makedir_codes');
+    // 下载路径的文本框
     let directory_path = document.querySelector('#directory_path');
-    let qBittorrent_rss_rule_codes = document.querySelector('#qBittorrent_rss_rule_codes');
+    // 选择下载用机器的操作系统
     let os_type_radios = document.querySelectorAll('input[name=os-type]');
+    // qBittorrent 的 rss 规则代码
+    let qBittorrent_rss_rule_codes = document.querySelector('#qBittorrent_rss_rule_codes');
+    // 下载生成的 rss 规则
     let qBittorrent_rss_rule_bth = document.querySelector('#qBittorrent_rss_rule_bth');
+    // UserScript 的分类
     let types_generate = document.querySelector('#types_generate');
 
-    types_input.addEventListener('input', updateTypes);
+    // 输入分类时生成创建文件夹的代码
+    types_input.addEventListener('input', update_make_dir_code);
+    // 输入下载地址时生成 rss 规则
     directory_path.addEventListener('input', qBittorrent_rss_rule_generate);
+    // 点击时下载生成好的 rss 规则
     qBittorrent_rss_rule_bth.addEventListener('click', download_qBittorrent_rss_rule);
     for (os_type_radio of os_type_radios) {
+        // 选择不同的操作系统类别，不同的路径生成规则
         os_type_radio.addEventListener('change', qBittorrent_rss_rule_generate)
     }
-    function updateTypes() {        
+
+    // 生成创建文件夹的代码
+    function update_make_dir_code() {        
         windows_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + '&cd';
         macos_and_linux_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + ';pwd';
-    };
+    }
+
     function qBittorrent_rss_rule_generate() {
-        input_path = directory_path.value;
-        if (!types_input.value || !input_path) {
+        input_directory_path = directory_path.value;
+        // 若分类文本框或输入路径文本框为空，就清除掉已生成的 rss 规则
+        if (!types_input.value || !input_directory_path) {
             qBittorrent_rss_rule_codes.innerHTML = ' ';
             qBittorrent_rss_rule_bth.classList.add('disabled')
             return;
         }
-        if (input_path.charAt(0) === '/') {
+        // 若输入的路径第一位为 / ，则判断系统为 MacOS/Linux
+        if (input_directory_path.charAt(0) === '/') {
             document.querySelector('input[value=os_mac_linux]').checked = true;
         } else {
             document.querySelector('input[value=os_win]').checked = true;
         }
+        // rss 规则
         qBittorrent_rss_rule = {}
 
         if (document.querySelector('input[name=os-type]:checked').value === 'os_win') {
-            input_path = input_path.replace(/\\/g, '/')
+            // qBittorrent 会自动处理 Windows 的路径分隔符，所以这里需要将 '\' 转义为 '/'。
+            input_directory_path = input_directory_path.replace(/\\/g, '/');
         } else if (document.querySelector('input[name=os-type]:checked').value === 'os_mac_linux') {
 
         }
         for (type of types_input.value.split(',')) {
-            if (input_path.charAt(input_path.length - 1) === '/') {
-                path = input_path + type
+            // 当路径最后一位字符为 '/' 时，不做处理，否则添加 '/'
+            if (input_directory_path.charAt(input_directory_path.length - 1) === '/') {
+                path = input_directory_path + type;
             } else {
-                path = input_path + '/' + type
+                path = input_directory_path + '/' + type;
             }
             qBittorrent_rss_rule[type] =
             {
@@ -173,9 +196,14 @@
         }
         qBittorrent_rss_rule_codes.innerHTML = JSON.stringify(qBittorrent_rss_rule)
         qBittorrent_rss_rule_bth.classList.remove('disabled')
+        UserScript_config_generate()
+    }
+    // 生成 UserScript 中的分类数组
+    function UserScript_config_generate() {
         document.querySelector('#backendURL').value = backend_URL;
         types_generate.value = JSON.stringify(types_input.value.split(','));
     }
+    // 生成 json 文件，自动下载。
     function download_qBittorrent_rss_rule() {
         qBittorrent_rss_rule_bth.classList.add('loading')
         setTimeout(() => {
