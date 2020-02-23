@@ -139,7 +139,14 @@
     }
 
     // 生成创建文件夹的代码
-    function update_make_dir_code() {        
+    function update_make_dir_code() {    
+        if(types_input.value.match(/ /g)){
+            types_input.closest("div").classList.add('has-error');
+            windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
+            return;
+        }else{
+            types_input.closest("div").classList.remove('has-error');
+        }
         windows_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + '&cd';
         macos_and_linux_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + ';pwd';
     }
@@ -152,11 +159,15 @@
             qBittorrent_rss_rule_bth.classList.add('disabled')
             return;
         }
+        directory_path.closest("div").classList.remove('has-error');
         // 若输入的路径第一位为 / ，则判断系统为 MacOS/Linux
         if (input_directory_path.charAt(0) === '/') {
             document.querySelector('input[value=os_mac_linux]').checked = true;
-        } else {
+        } else if(input_directory_path.charAt(0).match(/^[a-zA-Z]+$/g)){
             document.querySelector('input[value=os_win]').checked = true;
+        } else {
+            directory_path.closest("div").classList.add('has-error');
+            return;
         }
         // rss 规则
         qBittorrent_rss_rule = {}
