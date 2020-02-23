@@ -139,7 +139,11 @@
     }
 
     // 生成创建文件夹的代码
-    function update_make_dir_code() {    
+    function update_make_dir_code() {
+        if(!types_input.value){
+            windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
+            return;
+        }
         if(types_input.value.match(/ /g)){
             types_input.closest("div").classList.add('has-error');
             windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
