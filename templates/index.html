@@ -174,7 +174,7 @@
             windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
             return;
         }
-        windows_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + '&cd';
+        windows_makedir_codes.innerHTML = 'powershell -command "mkdir ' + types_input.value.split(',').join(', ') + '"';
         macos_and_linux_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + ';pwd';
     }
 
