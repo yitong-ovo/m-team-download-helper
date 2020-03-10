@@ -77,6 +77,14 @@
         </div>
         <pre class="code" data-lang="qBittorrent RSS Rule"><code id="qBittorrent_rss_rule_codes"> </code></pre>
         <button class="btn btn-link disabled" id='qBittorrent_rss_rule_bth'>下载配置</button>
+        <h4>3.1 设置 qBittorrent 的 RSS</h4>
+        <p>点击 <mark>视图</mark> 并勾选 <mark>RSS 阅读器</mark>。 然后在下方的标签内点击 <mark>RSS (0)</mark> 进入 RSS 的管理界面。</p>
+        <label class="form-label">选择 <mark>新 RSS 订阅</mark> 将下方的链接粘贴进去。</label>
+        <div class="input-group">
+            <input type="text" class="form-input" id="rss_xml_url">
+            <button class="btn btn-primary input-group-btn" data-clipboard-target="#rss_xml_url">复制</button>
+        </div>
+        <br>
         <p>然后<b>打开</b> qBittorrent 的 <mark>设置-RSS-勾选[启用 RSS BitTorrent 自动下载]-修改自动下载规则-导入</mark> <b>选择</b>刚刚下载的 json
             文件，点击即可导入。</p>
 
@@ -136,6 +144,8 @@
     let qBittorrent_rss_rule_codes = document.querySelector('#qBittorrent_rss_rule_codes');
     // 下载生成的 rss 规则
     let qBittorrent_rss_rule_bth = document.querySelector('#qBittorrent_rss_rule_bth');
+    // rss 订阅的地址
+    let rss_xml_url = document.querySelector('#rss_xml_url');
     // UserScript 的分类
     let types_generate = document.querySelector('#types_generate');
 
@@ -168,7 +178,6 @@
         }
         if (types_input.value.match(/^[\u4e00-\u9fa5_,a-zA-Z0-9]+$/g)) {
             types_input.closest("div").classList.remove('has-error');
-            return;
         } else {
             types_input.closest("div").classList.add('has-error');
             windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
@@ -182,7 +191,8 @@
         input_directory_path = directory_path.value;
         // 若分类文本框或输入路径文本框为空，就清除掉已生成的 rss 规则
         if (!types_input.value || !input_directory_path) {
-            qBittorrent_rss_rule_codes.innerHTML = ' ';
+            qBittorrent_rss_rule_codes.innerHTML = rss_xml_url.value = ' ';
+            
             qBittorrent_rss_rule_bth.classList.add('disabled')
             return;
         }
@@ -233,6 +243,7 @@
             }
         }
         qBittorrent_rss_rule_codes.innerHTML = JSON.stringify(qBittorrent_rss_rule)
+        rss_xml_url.value = rssURL;
         qBittorrent_rss_rule_bth.classList.remove('disabled')
         UserScript_config_generate()
     }
