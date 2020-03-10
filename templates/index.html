@@ -46,7 +46,8 @@
                             <code>4K</code> 的分类，造成子分类匹配失效。</li>
                     </ul>
                 </ul>
-                <li>标签示例: <code id="example_tags" class="tooltip" data-tooltip="点击即可填入">其他,4K_其他,4K_电视,4K_电影,电影,电视,综合_电影,综合_电子书,动漫,音乐</code></li>
+                <li>标签示例: <code id="example_tags" class="tooltip"
+                        data-tooltip="点击即可填入">其他,4K_其他,4K_电视,4K_电影,电影,电视,综合_电影,综合_电子书,动漫,音乐</code></li>
             </ul>
         </ul>
 
@@ -159,8 +160,8 @@
     example_tags.addEventListener('click', () => {
         types_input.value = example_tags.innerText;
         var input_event = new Event('input', {
-        'bubbles': true,
-        'cancelable': true
+            'bubbles': true,
+            'cancelable': true
         });
         types_input.dispatchEvent(input_event);
     })
@@ -192,7 +193,7 @@
         // 若分类文本框或输入路径文本框为空，就清除掉已生成的 rss 规则
         if (!types_input.value || !input_directory_path) {
             qBittorrent_rss_rule_codes.innerHTML = rss_xml_url.value = ' ';
-            
+
             qBittorrent_rss_rule_bth.classList.add('disabled')
             return;
         }
@@ -204,6 +205,8 @@
             document.querySelector('input[value=os_win]').checked = true;
         } else {
             directory_path.closest("div").classList.add('has-error');
+            // 在输入无效时清除文本
+            qBittorrent_rss_rule_codes.innerHTML = rss_xml_url.value = ' ';
             return;
         }
         // rss 规则
