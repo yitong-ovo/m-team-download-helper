@@ -166,12 +166,13 @@
             windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
             return;
         }
-        if (types_input.value.match(/ /g)) {
+        if (types_input.value.match(/^[\u4e00-\u9fa5_,a-zA-Z0-9]+$/g)) {
+            types_input.closest("div").classList.remove('has-error');
+            return;
+        } else {
             types_input.closest("div").classList.add('has-error');
             windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
             return;
-        } else {
-            types_input.closest("div").classList.remove('has-error');
         }
         windows_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + '&cd';
         macos_and_linux_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + ';pwd';
