@@ -104,6 +104,13 @@
     </div>
 </body>
 <script>
+    // https://stackoverflow.com/questions/35659430/how-do-i-programmatically-trigger-an-input-event-without-jquery
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     // 在按钮上绑定 ClipboardJS
     new ClipboardJS('.btn');
 
@@ -248,7 +255,7 @@
             element.click();
             document.body.removeChild(element);
             qBittorrent_rss_rule_bth.classList.remove('loading')
-        }, 1000 * 0.5);
+        }, getRandomInt(300, 500));
     }
 </script>
 
