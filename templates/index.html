@@ -82,8 +82,11 @@
 
         <h3>4. 安装并配置 UserScript 脚本</h3>
         <p>
-            首先你要确认你有安装 <a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a> 之类的 UserScript 管理器。
-            然后点击 <a href="https://github.com/yitong-ovo/m-team-download-helper/raw/master/m-team-download-helper.user.js" target="_blank" rel="noopener noreferrer">这里</a> 安装脚本。
+            首先你要确认你有安装 <a href="https://www.tampermonkey.net/" target="_blank"
+                rel="noopener noreferrer">Tampermonkey</a> 之类的 UserScript 管理器。
+            然后点击 <a
+                href="https://github.com/yitong-ovo/m-team-download-helper/raw/master/m-team-download-helper.user.js"
+                target="_blank" rel="noopener noreferrer">这里</a> 安装脚本。
             安装脚本后，使用你的 UserScript 管理器打开编辑脚本的界面。
         </p>
         <label class="form-label">将下面的标签粘贴到 <mark>UserScript 脚本</mark> 的 <mark>分类列表</mark> 内。</label>
@@ -140,15 +143,15 @@
 
     // 生成创建文件夹的代码
     function update_make_dir_code() {
-        if(!types_input.value){
+        if (!types_input.value) {
             windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
             return;
         }
-        if(types_input.value.match(/ /g)){
+        if (types_input.value.match(/ /g)) {
             types_input.closest("div").classList.add('has-error');
             windows_makedir_codes.innerHTML = macos_and_linux_makedir_codes.innerHTML = ' ';
             return;
-        }else{
+        } else {
             types_input.closest("div").classList.remove('has-error');
         }
         windows_makedir_codes.innerHTML = 'mkdir ' + types_input.value.split(',').join(' ') + '&cd';
@@ -167,7 +170,7 @@
         // 若输入的路径第一位为 / ，则判断系统为 MacOS/Linux
         if (input_directory_path.charAt(0) === '/') {
             document.querySelector('input[value=os_mac_linux]').checked = true;
-        } else if(input_directory_path.charAt(0).match(/^[a-zA-Z]+$/g)){
+        } else if (input_directory_path.charAt(0).match(/^[a-zA-Z]+$/g)) {
             document.querySelector('input[value=os_win]').checked = true;
         } else {
             directory_path.closest("div").classList.add('has-error');
