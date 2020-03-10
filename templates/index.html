@@ -46,7 +46,7 @@
                             <code>4K</code> 的分类，造成子分类匹配失效。</li>
                     </ul>
                 </ul>
-                <li>标签示例: <code>其他,4K_其他,4K_电视,4K_电影,电影,电视,综合_电影,综合_电子书,动漫,音乐</code></li>
+                <li>标签示例: <code id="example_tags" class="tooltip" data-tooltip="点击即可填入">其他,4K_其他,4K_电视,4K_电影,电影,电视,综合_电影,综合_电子书,动漫,音乐</code></li>
             </ul>
         </ul>
 
@@ -116,6 +116,8 @@
 
     // 输入分类的文本框
     let types_input = document.querySelector('#types_input');
+    // 示例 tag
+    let example_tags = document.querySelector('#example_tags');
     // 创建文件夹的代码框
     let windows_makedir_codes = document.querySelector('#windows_makedir_codes');
     let macos_and_linux_makedir_codes = document.querySelector('#macos_and_linux_makedir_codes');
@@ -136,6 +138,16 @@
     directory_path.addEventListener('input', qBittorrent_rss_rule_generate);
     // 点击时下载生成好的 rss 规则
     qBittorrent_rss_rule_bth.addEventListener('click', download_qBittorrent_rss_rule);
+    // 点击示例 tag 时填入分类文本框
+    example_tags.addEventListener('click', () => {
+        types_input.value = example_tags.innerText;
+        var input_event = new Event('input', {
+        'bubbles': true,
+        'cancelable': true
+        });
+        types_input.dispatchEvent(input_event);
+    })
+
     for (os_type_radio of os_type_radios) {
         // 选择不同的操作系统类别，不同的路径生成规则
         os_type_radio.addEventListener('change', qBittorrent_rss_rule_generate)
